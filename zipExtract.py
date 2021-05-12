@@ -5,6 +5,11 @@ import pyzipper
 # pip install pycryptodome
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
+"""
+pycryptodome  3.10.1
+pycryptodomex 3.10.1
+pyzipper      0.3.5
+"""
 
 
 def clearConsole():
@@ -26,17 +31,28 @@ def aesProcess(myFile, salt, divideNum, txtPass):
         while targetName not in myFile.keys():
             listProcessandPrint(list(myFile.keys()), divideNum)
             targetName = input('Target name : ')
+            if targetName == 'All':
+                targetName = list(myFile.keys())
+                break
         if txtPass == '':
             password = getpass.getpass('Password : ')
         else:
             password = txtPass
         try:
-            key = PBKDF2(password, salt, dkLen=32)
-            Target = myFile[targetName]
-            cipher = AES.new(key, AES.MODE_EAX, bytes.fromhex(Target["Nonce"]))
-            data = cipher.decrypt_and_verify(bytes.fromhex(Target["Password"]),
-                                             bytes.fromhex(Target["Tag"]))
-            print(str(Target["Account"]) + ' ' + str(data.decode()))
+            if type(targetName) != list:
+                targetName = targetName.split()
+            for target in targetName:
+                key = PBKDF2(password, salt, dkLen=32)
+                Target = myFile[target]
+                cipher = AES.new(key, AES.MODE_EAX,
+                                 bytes.fromhex(Target["Nonce"]))
+                data = cipher.decrypt_and_verify(
+                    bytes.fromhex(Target["Password"]),
+                    bytes.fromhex(Target["Tag"]))
+                print(
+                    target.ljust(15) + ' : ' + str(Target["Level"]) + ' : ' +
+                    str(Target["Account"]).ljust(20) + ' : ' +
+                    str(data.decode()))
             continue_ = input('continue (Y/N) : ')
             clearConsole()
         except:
