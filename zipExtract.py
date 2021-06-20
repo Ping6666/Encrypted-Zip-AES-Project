@@ -5,6 +5,11 @@ import pyzipper
 # pip install pycryptodome
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
+"""
+pycryptodome  3.10.1
+pycryptodomex 3.10.1
+pyzipper      0.3.5
+"""
 
 
 def clearConsole():
