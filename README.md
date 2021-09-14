@@ -18,6 +18,9 @@ Do not leak your key salt in salt.txt . This is crucially important about the co
 - pyzipper
 - pycryptodome
 
+`pip install pyzipper`
+`pip install pycryptodome`
+
 ### CLI
 
 zipExtract.py -i <fileName.zip> [-z zipPassword][-e] [-t txtPassword]
